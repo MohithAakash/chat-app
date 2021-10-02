@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomChat - Create Room </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky" data-offset="500">
+            <div class="container">
+                <a href="#" class="navbar-brand">Room<span class="text-primary">Chat.</span></a>
+
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="container d-flex justify-content-center" style="margin-top: 9rem;">
+            <div class="card  " style="transform: none; width:70rem ;transition:none; cursor: text;">
+                <div class="card-body">
+                    <h3 style="text-align: center;">Create a Room to send messages! </h3>
+                    <hr>
+                    <br><br>
+
+                    <!-- <form action='/crowdengine/write' method="POST"> -->
+                    <!-- </br> -->
+                    <form action="/chat" method="POST">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Enter your name</label>
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div> <br>
+
+                        <div class="form-group">
+                            <label for="room-name">Room Name</label>
+                            <input type="text" class="form-control" name="room-name" id="room-name" aria-describedby="room-name-help"
+                                required>
+                            <small id="room-name-help" class="form-text text-muted"> Give a name to your room. Be
+                                creative ;) </small>
+                        </div> <br>
+                        <input type="hidden" name="type" value="create">
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- <h1>  </h1>
+    <form action="/chat" method="POST">
+        <div>
+            <label for="">
+                
+                <input type="text" name="room-name" id="" required>
+            </label>
+        </div>
+        <div>
+            <label for="user-name">
+                Host
+                <input type="text" name="name" id="name" required>
+            </label>
+        </div>
+        <input type="hidden" name="type" value="create"> -->
+
+        <!-- <div>
+            <label for="room">
+                Enter-Room Id
+                <input type="number" name="room" required>
+            </label>
+        </div> -->
+        <!-- <div>
+            <label for="room">
+                Create a Passcode for your room
+                <input type="password" name="password" required>
+            </label>
+        </div> -->
+        <!-- <div>
+            <label for="">
+                Set Member Limit
+            </label>
+        </div> -->
+        <!-- <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form> -->
+
+    </div>
+</body>
+
+</html>

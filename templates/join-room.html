@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomChat - Join Room </title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky" data-offset="500">
+            <div class="container">
+                <a href="#" class="navbar-brand">Room<span class="text-primary">Chat.</span></a>
+
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="container d-flex justify-content-center" style="margin-top: 9rem;">
+            <div class="card  " style="transform: none; width:70rem ;transition:none; cursor: text;">
+                <div class="card-body">
+                    <h3 style="text-align: center;">Join a Room to send messages! </h3>
+                    <hr>
+                    <br><br>
+
+                    <!-- <form action='/crowdengine/write' method="POST"> -->
+                    <!-- </br> -->
+                    <form action="/chat" method="POST">
+                        <div class="form-group">
+                            <label for="name">Your display name</label>
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div> <br>
+
+                        <div class="form-group">
+                            <label for="room-id">Room Id</label>
+                            <input type="text" class="form-control" name="room-id" id="room-id" aria-describedby="room-id-help"
+                                required>
+                            <small id="room-id-help" class="form-text text-muted"> Enter the room id of the room you
+                                wish to join
+                            </small>
+                        </div> <br>
+                        <input type="hidden" name="type" value="join">
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- <form action="/chat" method="POST">
+        <div>
+            <label for="">
+                Enter your Name
+                <input type="text" name="name" id="" required>
+            </label>
+        </div>
+        <div>
+            <label for="user-name">
+                Enter Room ID
+                <input type="text" name="room-id" id="room-id" required>
+            </label>
+        </div>
+        <input type="hidden" name="type" value="join"> -->
+    <!-- <div>
+            <label for="room">
+                Enter-Room Id
+                <input type="number" name="room" required>
+            </label>
+        </div> -->
+    <!-- <div>
+            <label for="room">
+                Create a Passcode for your room
+                <input type="password" name="password" required>
+            </label>
+        </div> -->
+    <!-- <div>
+            <label for="">
+                Set Member Limit
+            </label>
+        </div> -->
+    <!-- <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form> -->
+
+
+</body>
+
+</html>

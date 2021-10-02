@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomChat</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            padding-top: 0;
+            font-size: 12px;
+            color: #777;
+            background: #f9f9f9;
+            font-family: 'Open Sans', sans-serif;
+            margin-top: 20px;
+        }
+
+        .bg-white {
+            background-color: #fff;
+        }
+
+        .friend-list {
+            list-style: none;
+            margin-left: -40px;
+        }
+
+        .friend-list li {
+            border-bottom: 1px solid #eee;
+        }
+
+        .friend-list li a img {
+            float: left;
+            width: 45px;
+            height: 45px;
+            margin-right: 10px;
+        }
+
+        .friend-list li a {
+            position: relative;
+            display: block;
+            padding: 10px;
+            transition: all .2s ease;
+            -webkit-transition: all .2s ease;
+            -moz-transition: all .2s ease;
+            -ms-transition: all .2s ease;
+            -o-transition: all .2s ease;
+        }
+
+        .friend-list li.active a {
+            background-color: #f1f5fc;
+        }
+
+        .friend-list li a .friend-name,
+        .friend-list li a .friend-name:hover {
+            color: #777;
+        }
+
+        .friend-list li a .last-message {
+            width: 65%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .friend-list li a .time {
+            position: absolute;
+            top: 10px;
+            right: 8px;
+        }
+
+        small,
+        .small {
+            font-size: 85%;
+        }
+
+        .friend-list li a .chat-alert {
+            position: absolute;
+            right: 8px;
+            top: 27px;
+            font-size: 10px;
+            padding: 3px 5px;
+        }
+
+        .chat-message {
+            padding: 20px 20px;
+        }
+
+        .chat {
+            list-style: none;
+            margin: 0;
+        }
+
+        .chat-message {
+            background: #f9f9f9;
+        }
+
+        .chat li img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50em;
+            object-fit:scale-down;
+            -moz-border-radius: 50em;
+            -webkit-border-radius: 50em;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .chat-body {
+            padding-bottom: 20px;
+        }
+
+        .chat li.left .chat-body {
+            margin-left: 70px;
+            background-color: #fff;
+        }
+
+        .chat li .chat-body {
+            position: relative;
+            font-size: 15px;
+            padding: 10px;
+            border: 1px solid #f1f5fc;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+            -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+
+        .chat li .chat-body .header {
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f1f5fc;
+        }
+
+        .chat li .chat-body p {
+            margin: 0;
+        }
+
+        .chat li.left .chat-body:before {
+            position: absolute;
+            top: 10px;
+            left: -8px;
+            display: inline-block;
+            background: #fff;
+            width: 16px;
+            height: 16px;
+            border-top: 1px solid #f1f5fc;
+            border-left: 1px solid #f1f5fc;
+            content: '';
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+        }
+
+        .chat li.right .chat-body:before {
+            position: absolute;
+            top: 10px;
+            right: -8px;
+            display: inline-block;
+            background: #fff;
+            width: 16px;
+            height: 16px;
+            border-top: 1px solid #f1f5fc;
+            border-right: 1px solid #f1f5fc;
+            content: '';
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+        }
+
+        .chat li {
+            margin: 15px 0;
+        }
+
+        .chat li.right .chat-body {
+            margin-right: 70px;
+            background-color: #fff;
+        }
+
+        .chat-box {
+            /*
+  position: fixed;
+  bottom: 0;
+  left: 444px;
+  right: 0;
+*/
+            padding: 15px;
+            border-top: 1px solid #eee;
+            transition: all .5s ease;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            -ms-transition: all .5s ease;
+            -o-transition: all .5s ease;
+        }
+
+        .primary-font {
+            color: #3c8dbc;
+        }
+
+        a:hover,
+        a:active,
+        a:focus {
+            text-decoration: none;
+            outline: 0;
+        }
+
+        .text-align-center {
+            text-align: center;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- socketIO  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+
+</head>
+
+<body>
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+
+    <div class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-md-4 bg-white ">
+                <div class=" row border-bottom padding-sm text-align-center" style="padding: 1rem;">
+                    <b>Room-id: {{room_id}} </b>
+                </div>
+
+                <div class=" row border-bottom padding-sm justify-content-center align-items-center"
+                    style="height: 40px;">
+                    Room Members
+                </div>
+
+                <!-- =============================================================== -->
+                <!-- member list -->
+                <ul class="friend-list" id="member-list">
+                    <!-- <li class="active bounceInDown">
+                        <a href="" class="clearfix">
+                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                            <div class="friend-name">
+                                <strong>John Doe</strong>
+                            </div>
+                             <div class="last-message text-muted">Hello, Are you there?</div>
+                            <small class="time text-muted">Just now</small>
+                            <small class="chat-alert label label-danger">1</small> 
+                        </a>
+                    </li> -->
+                    {% if members %}
+                    {% for member in members %}
+                    <li>
+                        <a href="" class="clearfix">
+                            <img src="https://i.pinimg.com/originals/c2/ca/fe/c2cafe93c0f6b1ea21341d2810484b57.jpg"
+                                alt="" class="img-circle" >
+                            <div class="friend-name">
+                                <strong>{{member}}</strong>
+                            </div>
+                            <!-- <div class="last-message text-muted">Lorem ipsum dolor sit amet.</div> -->
+                            <!-- <small class="time text-muted">5 mins ago</small>
+                            <small class="chat-alert text-muted"><i class="fa fa-check"></i></small>  -->
+                        </a>
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!--=========================================================-->
+            <!-- selected chat -->
+            <div class="col-md-8 bg-white">
+                <div class="text-align-center" style="padding: 0.75rem;">
+                    <h3>
+                        {{roomname}}
+                    </h3>
+                </div>
+                <div class="chat-message" style="height: 710px; overflow-y: scroll;">
+                    <ul class="chat" id="chat-container">
+                        <!-- <li class="clearfix text-align-center">
+                            <div class="chat-body">Mohith has joined the room :)</div>
+                        </li>
+                        <li class="left clearfix">
+                            <span class="chat-img pull-right">
+                                <img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar"
+                                    class="float-left">
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">John Doe</strong>
+                                    <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins
+                                        ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                </p>
+                            </div>
+                        </li>-->
+                        <!-- <li class="right clearfix">
+                            <span class="chat-img pull-right" style="object-fit: contain;">
+                                <img src="https://i.pinimg.com/originals/c2/ca/fe/c2cafe93c0f6b1ea21341d2810484b57.jpg"  alt="User Avatar"
+                                    class="float-right">
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Sarah</strong>
+                                    <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins
+                                        ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales at.
+                                </p>
+                            </div>
+                        </li>  -->
+
+                    </ul>
+                </div>
+                <br><br><br>
+                <div class="chat-box bg-white" style="position: fixed; bottom: 1rem; width: 46.5%; z-index: 20;">
+                    <div class="input-group">
+                        <input class="form-control border no-shadow no-rounded" id="message-input"
+                            placeholder="Type your message here">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success no-rounded" id="send-btn" type="button">Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+            socket.on('connect', function () {
+                socket.emit('join_room', {
+                    username: '{{ username }}',
+                    room_id: '{{ room_id }}',
+                    roomname: '{{ roomname }} '
+                });
+            });
+
+            socket.on('join_room_announcement', function (data) {
+                // console.log(data);
+                $("#chat-container").append(
+                    '<li class="clearfix text-align-center bg-white"><div class="chat-body">' +
+                    data['username'] + ' has joined the room :)</div></li>'
+                )
+
+                $('#member-list').append(
+                    '<li><a href="" class="clearfix"><img src="https://i.pinimg.com/originals/c2/ca/fe/c2cafe93c0f6b1ea21341d2810484b57.jpg" alt="" class="img-circle"><div class="friend-name"><strong>' +
+                    data['username'] +
+                    '</strong></div></a></li>'
+                )
+            })
+
+            window.onbeforeunload = function () {
+                socket.emit('leave_room', {
+                    username: "{{ username }}",
+                    room_id: '{{ room_id }}',
+                    roomname: '{{ roomname }} '
+                })
+            };
+
+            // socket.on('disconnect', function () {
+            //     // console.log("left the room")
+            //     socket.emit('disconnect', {
+            //         username: '{{ username }}',
+            //         room: '{{ room }}'
+            //     });
+            // })
+
+            socket.on('leave_room_announcement', function () {
+                // console.log("left the room")
+                $("#chat-container").append(
+                    '<li class="clearfix text-align-center"><div class="chat-body">' +
+                    data['username'] + ' has left the room :(</div></li>'
+                )
+            })
+
+
+            $("#send-btn").click(function () {
+                console.log($("#message-input"));
+                msg = $("#message-input").val();
+
+                socket.emit('send_message', {
+                    username: '{{ username }}',
+                    room_id: '{{ room_id }}',
+                    roomname: '{{ roomname }} ',
+                    message: msg
+                });
+                $("#message-input").val('');
+                $("#message-input").focus();
+            })
+
+            socket.on('receive_message', function (data) {
+                $("#chat-container").append(
+                    '<li class="left clearfix"><span class="chat-img pull-right">' +
+                    '<img src="https://i.pinimg.com/originals/c2/ca/fe/c2cafe93c0f6b1ea21341d2810484b57.jpg" style="object-fit: scale-down;" alt="User Avatar" class="float-left"></span>' +
+                    '<div class="chat-body clearfix"><div class="header"><strong class="primary-font">' +
+                    data['username'] +
+                    ' </strong><small class="pull-right text-muted"><i class="fa fa-clock-o"></i>' +
+                    getTime() +
+                    '</small></div> <p>' +
+                    data['message'] +
+                    '</p> </div> </li>'
+                )
+            })
+
+            document.getElementById("message-input")
+                .addEventListener("keyup", function (event) {
+                    event.preventDefault();
+                    if (event.keyCode === 13) {
+                        document.getElementById("send-btn").click();
+                    }
+                });
+
+            function getTime() {
+
+                let currentDate = new Date();
+                let time = currentDate.getHours() + ":" + currentDate.getMinutes();
+                console.log(time);
+                return time;
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
